@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXION AI - Mini AI Governance Assessment - NMB Bank</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0D2B4E;--navy-mid:#1A3E6A;--navy-lite:#E8EEF5;
+  --gold:#B8860B;--gold-lite:#FDF6E3;
+  --teal:#1D9E75;--teal-dark:#085041;--teal-lite:#E1F5EE;
+  --purple:#534AB7;--purple-lite:#EEEDFE;
+  --amber:#BA7517;--amber-lite:#FAEEDA;
+  --blue:#185FA5;--blue-lite:#E6F1FB;
+  --red:#A32D2D;--red-lite:#FCEBEB;
+  --gray:#444441;--gray-mid:#888780;--gray-lite:#F1EFE8;
+  --border:#D3D1C7;--white:#fff;--parchment:#F8F7F4;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--parchment);color:var(--gray);line-height:1.6;}
+.no-print{}
+@media print{
+  .no-print{display:none!important;}
+  .print-only{display:block!important;}
+  body{background:white;}
+  .page-break{page-break-before:always;}
+  .card{box-shadow:none!important;border:1px solid var(--border)!important;}
+}
+.print-only{display:none;}
+
+/* NAV */
+.topbar{background:var(--navy);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'Playfair Display',serif;color:white;font-size:1.1rem;}
+.topbar-sub{font-size:.7rem;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;}
+.topbar-right{display:flex;gap:.75rem;align-items:center;}
+.btn{padding:8px 20px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;border:none;}
+.btn-gold{background:var(--gold);color:white;}
+.btn-gold:hover{background:#9a6f09;}
+.btn-outline{background:transparent;color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.3);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-navy{background:var(--navy);color:white;}
+.btn-navy:hover{background:var(--navy-mid);}
+.btn-lg{padding:12px 32px;font-size:.95rem;}
+
+/* PROGRESS */
+.prog-bar{background:white;border-bottom:1px solid var(--border);padding:.6rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:56px;z-index:90;}
+.prog-dots{display:flex;gap:4px;flex:1;}
+.dot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s;}
+.dot.done{background:var(--teal);}
+.dot.active{background:var(--gold);}
+.prog-label{font-size:.72rem;color:var(--gray-mid);}
+.prog-pct{font-size:.72rem;font-weight:600;color:var(--gold);}
+
+/* PAGES */
+.page{display:none;animation:fadeUp .3s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.container{max-width:880px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.container-wide{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+
+/* HERO */
+.hero{background:var(--navy);padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(184,134,11,.1) 0%,transparent 65%);}
+.hero-tag{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:white;margin-bottom:.75rem;position:relative;}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero p{color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 2rem;font-size:.95rem;position:relative;}
+.hero-badges{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;position:relative;}
+.badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:.68rem;padding:3px 10px;border-radius:3px;letter-spacing:.05em;font-weight:500;}
+.hero-meta{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;position:relative;}
+.hero-meta-item{text-align:center;}
+.hero-meta-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);}
+.hero-meta-label{font-size:.72rem;color:rgba(255,255,255,.5);}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--border);border-radius:10px;margin-bottom:1rem;}
+
+/* ORG FORM */
+.org-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;}
+.form-group input{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--gray);outline:none;transition:border-color .2s;}
+.form-group input:focus{border-color:var(--gold);}
+@media(max-width:600px){.org-form{grid-template-columns:1fr;}}
+
+/* SECTION HEADER */
+.sec-head{margin:2rem 0 1rem;}
+.sec-head .eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.4rem;}
+.sec-head p{font-size:.88rem;color:var(--gray-mid);}
+
+/* QUESTION CARD */
+.q-card{background:white;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem;}
+.q-card-header{padding:.9rem 1.25rem;display:flex;align-items:center;gap:.9rem;}
+.q-dim-badge{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;}
+.q-dim-title{font-size:.95rem;font-weight:600;flex:1;}
+.q-dim-ref{font-size:.68rem;color:var(--gray-mid);font-family:'DM Mono',monospace;}
+.q-body{padding:1rem 1.25rem;border-top:1px solid var(--gray-lite);}
+.q-text{font-size:.9rem;font-weight:500;color:var(--navy);margin-bottom:.5rem;line-height:1.5;}
+.q-why{font-size:.78rem;color:var(--gray-mid);margin-bottom:1rem;font-style:italic;}
+.q-prompts{margin-bottom:1rem;}
+.q-prompt-label{font-size:.72rem;font-weight:600;color:var(--gray-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;}
+.q-prompt{font-size:.8rem;color:var(--gray);margin-bottom:.3rem;padding-left:.75rem;border-left:2px solid var(--border);}
+.score-row{display:flex;gap:6px;}
+.score-btn{flex:1;padding:9px 4px;border:1.5px solid var(--border);border-radius:7px;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;color:var(--gray-mid);transition:all .15s;text-align:center;line-height:1.3;}
+.score-btn:hover{border-color:var(--navy);color:var(--navy);}
+.score-btn.s0{background:var(--red-lite);border-color:var(--red);color:var(--red);}
+.score-btn.s1{background:var(--amber-lite);border-color:var(--amber);color:var(--amber);}
+.score-btn.s2{background:var(--blue-lite);border-color:var(--blue);color:var(--blue);}
+.score-btn.s3{background:var(--teal-lite);border-color:var(--teal);color:var(--teal-dark);}
+.obs-row{margin-top:.75rem;}
+.obs-row label{font-size:.75rem;font-weight:600;color:var(--gray-mid);margin-bottom:.3rem;display:block;}
+.obs-row textarea{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--gray);resize:vertical;min-height:52px;outline:none;transition:border-color .2s;}
+.obs-row textarea:focus{border-color:var(--gold);}
+
+/* NAV BAR */
+.nav-bar{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0 0;gap:1rem;}
+.btn-back{background:white;border:1.5px solid var(--border);color:var(--gray);padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;}
+.btn-back:hover{border-color:var(--gray);}
+.btn-next{background:var(--navy);border:none;color:white;padding:10px 28px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;}
+.btn-next:hover{background:var(--navy-mid);}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;}
+
+/* RESULTS */
+.maturity-banner{border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.level-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.level-name{font-family:'Playfair Display',serif;font-size:2rem;}
+.level-desc{font-size:.82rem;margin-top:6px;opacity:.85;max-width:400px;line-height:1.5;}
+.score-big{font-family:'Playfair Display',serif;font-size:3rem;text-align:right;}
+.score-sub{font-size:.7rem;opacity:.65;text-align:right;}
+.dim-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;margin-bottom:1.5rem;}
+@media(max-width:700px){.dim-grid{grid-template-columns:1fr 1fr;}}
+.dim-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1rem;text-align:center;}
+.dim-card-title{font-size:.72rem;color:var(--gray-mid);margin-bottom:.4rem;}
+.dim-card-score{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;}
+.dim-card-label{font-size:.68rem;margin-top:2px;font-weight:600;}
+.dim-bar-wrap{height:5px;background:var(--gray-lite);border-radius:3px;overflow:hidden;margin-top:.5rem;}
+.dim-bar-fill{height:100%;border-radius:3px;transition:width .7s ease;}
+.findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:600px){.findings-grid{grid-template-columns:1fr;}}
+.finding-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1.1rem;}
+.finding-card h4{font-size:.82rem;font-weight:600;margin-bottom:.75rem;}
+.finding-item{font-size:.8rem;color:var(--gray);margin-bottom:.5rem;padding:.5rem .75rem;border-radius:6px;line-height:1.45;}
+.obs-display{font-size:.75rem;color:var(--gray-mid);margin-top:.25rem;font-style:italic;}
+.next-steps-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1.25rem;margin-bottom:1.5rem;}
+.next-steps-card h4{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.75rem;}
+.next-step-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--gray-lite);font-size:.82rem;color:var(--gray);}
+.next-step-item:last-child{border-bottom:none;}
+.ns-badge{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;}
+.actions-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;}
+.btn-print{background:var(--teal);border:none;color:white;padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;}
+.btn-print:hover{background:var(--teal-dark);}
+.btn-restart{background:white;border:1.5px solid var(--border);color:var(--gray);padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;}
+.disclaimer{font-size:.7rem;color:var(--gray-mid);margin-top:1.5rem;line-height:1.6;padding:.75rem 1rem;background:var(--gray-lite);border-radius:7px;}
+.axion-footer{background:var(--navy);color:rgba(255,255,255,.6);padding:1.25rem 1.5rem;border-radius:9px;margin-top:1.5rem;text-align:center;font-size:.8rem;}
+.axion-footer strong{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<nav class="topbar no-print">
+  <div>
+    <div class="topbar-logo">AXION AI</div>
+    <div class="topbar-sub">Governance · Risk · Accountability</div>
+  </div>
+  <div class="topbar-right">
+    <span style="font-size:.78rem;color:rgba(255,255,255,.5);">NMB Bank - Mini AI Governance Assessment</span>
+    <button class="btn btn-outline" onclick="restart()">Start over</button>
+  </div>
+</nav>
+
+<div id="prog-bar" class="prog-bar no-print" style="display:none!important;">
+  <div class="prog-label" id="prog-label">Step 1 of 7</div>
+  <div class="prog-dots" id="prog-dots"></div>
+  <div class="prog-pct" id="prog-pct">0%</div>
+</div>
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero-tag">AXION AI · Financial Services Edition</div>
+    <h1>Mini AI Governance<br><em>Assessment</em></h1>
+    <p>A focused 5-minute diagnostic for NMB Bank's board and executive leadership. Discuss, score, and leave with an instant board findings summary.</p>
+    <div class="hero-badges">
+      <span class="badge">Discussion-based</span>
+      <span class="badge">Indicative</span>
+      <span class="badge">Board-ready output</span>
+      <span class="badge">5 minutes</span>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-num">5</div><div class="hero-meta-label">Governance dimensions</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">5</div><div class="hero-meta-label">Critical questions</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">5</div><div class="hero-meta-label">Minutes</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">0–3</div><div class="hero-meta-label">Score per dimension</div></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Discussion-based. Indicative. Board-ready.</h2>
+      <p>This tool is designed to be used by NMB Bank's leadership team without external facilitation. Discuss each question openly - your first honest instinct is the right answer. At the end, an instant findings summary is generated, ready to present to the board.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">💬</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Discuss as a team</div><div style="font-size:.8rem;color:var(--gray-mid);">One question per dimension. Talk through it honestly before scoring.</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">☑️</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Score 0 to 3</div><div style="font-size:.8rem;color:var(--gray-mid);">0 = Not in place. 1 = Partial. 2 = Mostly. 3 = Fully in place.</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">📊</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Instant results</div><div style="font-size:.8rem;color:var(--gray-mid);">Your maturity level, top gaps, and recommended next steps - generated immediately.</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">🖨</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Print & share</div><div style="font-size:.8rem;color:var(--gray-mid);">Print the findings summary directly from your browser for the board pack.</div></div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn btn-gold btn-lg" onclick="goTo('page-org')">Begin Assessment →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORG DETAILS -->
+<div class="page" id="page-org">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Step 1 of 7 - Organisation details</div>
+      <h2>Confirm your details</h2>
+      <p>These appear on your board findings summary. You can edit them at any time.</p>
+    </div>
+    <div class="card" style="padding:1.5rem;">
+      <div class="org-form">
+        <div class="form-group"><label>Organisation name</label><input id="org-name" type="text" value="NMB Bank Zimbabwe" placeholder="Organisation name"></div>
+        <div class="form-group"><label>Assessment date</label><input id="org-date" type="text" placeholder="e.g. 15 January 2025"></div>
+        <div class="form-group"><label>Participants</label><input id="org-participants" type="text" placeholder="e.g. Board of Directors, ExCo"></div>
+        <div class="form-group"><label>Facilitated by</label><input id="org-facilitator" type="text" value="AXION AI (Private) Limited" placeholder="Facilitator name"></div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn-back" onclick="goTo('page-landing')">← Back</button>
+      <button class="btn-next" onclick="goTo('page-q0')">Start Assessment →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS (pages 2-6) -->
+<div class="page" id="page-q0"></div>
+<div class="page" id="page-q1"></div>
+<div class="page" id="page-q2"></div>
+<div class="page" id="page-q3"></div>
+<div class="page" id="page-q4"></div>
+
+<!-- RESULTS -->
+<div class="page" id="page-results">
+  <div class="container-wide">
+    <div class="sec-head">
+      <div class="eyebrow">Assessment complete</div>
+      <h2>Board Findings Summary</h2>
+      <p id="res-org-label"></p>
+    </div>
+    <div id="res-banner" class="maturity-banner"></div>
+    <div class="dim-grid" id="res-dims"></div>
+    <div class="findings-grid" id="res-findings"></div>
+    <div class="next-steps-card" id="res-next"></div>
+    <div class="axion-footer">
+      <strong>AXION AI (Private) Limited</strong> · Zimbabwe's specialist AI governance and risk advisory practice ·
+      <strong>info@axionadvisory.net</strong> · axionadvisory.net · Certified AI Governance Advisors
+    </div>
+    <div class="actions-row no-print">
+      <button class="btn-restart" onclick="restart()">← Start over</button>
+      <button class="btn-print" onclick="window.print()">🖨 Print board findings summary</button>
+    </div>
+    <div class="disclaimer">
+      This is an indicative self-assessment for discussion purposes. It does not constitute a formal audit. Results should be validated through a full AI Governance Readiness Assessment engagement with AXION AI. Prepared by AXION AI (Private) Limited, Harare, Zimbabwe.
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const SECTIONS = [
+  {
+    id:'d1', title:'Policy & Leadership',
+    color:'#534AB7', lite:'#EEEDFE',
+    question:'If a shareholder asked your Board today who is accountable for AI decisions at this bank - and what your AI policy says - could you give a clear, documented answer?',
+    why:'Without a named owner and a documented policy, AI governance has no foundation. For a ZSE-listed bank this is a fiduciary gap.',
+    prompts:['Does a board-approved AI policy exist?','Is accountability for AI decisions named and documented?','Has the Board received an AI governance briefing in the last 12 months?'],
+  },
+  {
+    id:'d2', title:'Risk Management',
+    color:'#1D9E75', lite:'#E1F5EE',
+    question:'Before the bank\'s most recent AI system or AI-powered vendor platform went live - was a structured risk assessment completed, covering bias, data quality, and regulatory compliance?',
+    why:'Banks using AI credit or fraud tools without bias assessment carry unquantified regulatory and reputational risk.',
+    prompts:['Was a risk assessment completed and documented before deployment?','Is there a register of all AI systems in use - including vendor-embedded AI?','Are high-risk AI applications subject to more rigorous governance than low-risk ones?'],
+  },
+  {
+    id:'d3', title:'Operations & Controls',
+    color:'#185FA5', lite:'#E6F1FB',
+    question:'Do the bank\'s contracts with AI vendors require them to disclose model changes, notify the bank of incidents, and submit to audit - and does someone at the bank actively monitor AI outputs after deployment?',
+    why:'Most AI exposure in banks comes from third-party vendors. Without contractual accountability and monitoring, the bank carries the risk.',
+    prompts:['Are vendor AI contracts reviewed for governance provisions?','Who monitors AI system performance post-deployment - and how often?','Is there a current register of all third-party AI platforms in use?'],
+  },
+  {
+    id:'d4', title:'People & Culture',
+    color:'#BA7517', lite:'#FAEEDA',
+    question:'Do customers know when AI influences a decision about them - and do staff know how to raise a concern if an AI system produces an unexpected or unfair outcome?',
+    why:'Transparency and grievance mechanisms are legal obligations under Zimbabwean law - not optional.',
+    prompts:['Is AI use disclosed to customers in credit or service decisions?','Is there a clear internal channel for staff to raise AI concerns without reprisal?','Are staff trained on the AI tools they use - including their limitations?'],
+  },
+  {
+    id:'d5', title:'Audit & Improvement',
+    color:'#444441', lite:'#F1EFE8',
+    question:'Has the bank\'s internal audit function ever reviewed an AI system - and does the Audit & Risk Committee receive any reporting on AI governance matters?',
+    why:'Governance that cannot be independently verified cannot be defended to regulators or shareholders.',
+    prompts:['Is AI governance within internal audit\'s current scope?','When did the Board or Audit Committee last discuss AI risk?','Is there a process to improve governance after incidents or regulatory changes?'],
+  },
+];
+
+const SCORE_LABELS = ['Not in place','Partial','Mostly in place','Fully in place'];
+const SCORE_LABELS_SHORT = ['None','Partial','Mostly','In place'];
+
+// ── STATE ─────────────────────────────────────────────────────────
+let state = { scores:{}, observations:{} };
+
+// ── NAV ───────────────────────────────────────────────────────────
+const PAGES = ['page-landing','page-org','page-q0','page-q1','page-q2','page-q3','page-q4','page-results'];
+
+function goTo(pid) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pid).classList.add('active');
+  window.scrollTo(0,0);
+  updateProg(pid);
+}
+
+function updateProg(pid) {
+  const bar = document.getElementById('prog-bar');
+  if(pid==='page-landing'){bar.style.display='none';return;}
+  bar.style.display='flex';
+  const idx = PAGES.indexOf(pid);
+  const total = PAGES.length;
+  const pct = Math.round((idx/(total-1))*100);
+  const dots = document.getElementById('prog-dots');
+  dots.innerHTML='';
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i<idx?' done':i===idx?' active':'');
+    dots.appendChild(d);
+  }
+  document.getElementById('prog-label').textContent=`Step ${idx} of ${total-1}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+function restart() {
+  state={scores:{},observations:{}};
+  buildQuestionPages();
+  goTo('page-landing');
+}
+
+// ── BUILD QUESTION PAGES ──────────────────────────────────────────
+function buildQuestionPages() {
+  SECTIONS.forEach((sec,i) => {
+    const pid = `page-q${i}`;
+    const el = document.getElementById(pid);
+    const sel = state.scores[sec.id];
+    el.innerHTML = `
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step ${i+2} of 7 - Dimension ${i+1} of 5</div>
+          <h2>${sec.title}</h2>
+        </div>
+        <div class="q-card">
+          <div class="q-card-header" style="background:${sec.lite}30;border-bottom:1px solid ${sec.lite};">
+            <div class="q-dim-badge" style="background:${sec.lite};color:${sec.color};">D${i+1}</div>
+            <div>
+              <div class="q-dim-title" style="color:${sec.color};">${sec.title}</div>
+            </div>
+          </div>
+          <div class="q-body">
+            <div class="q-text">${sec.question}</div>
+            <div class="q-why">Why this matters: ${sec.why}</div>
+            <div class="q-prompts">
+              <div class="q-prompt-label">Discussion prompts</div>
+              ${sec.prompts.map(p=>`<div class="q-prompt">→  ${p}</div>`).join('')}
+            </div>
+            <div class="score-row">
+              ${SCORE_LABELS.map((l,v)=>`
+                <button class="score-btn ${sel===v?'s'+v:''}"
+                  onclick="score('${sec.id}',${v},'${pid}')">
+                  <strong>${v}</strong><br>${l}
+                </button>
+              `).join('')}
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-${sec.id}" placeholder="Record the key point that emerged from your discussion..."
+                onchange="recordObs('${sec.id}')">${state.observations[sec.id]||''}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo('${i===0?'page-org':`page-q${i-1}`}')">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              ${sel!==undefined?'Scored ✓ - click Next to continue':'Score this dimension to continue'}
+            </div>
+            <button class="btn-next" ${sel===undefined?'disabled':''} onclick="goTo('${i<4?`page-q${i+1}`:'page-results'}');${i===4?'buildResults();':''}">
+              ${i<4?'Next →':'See Results →'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function score(id, val, pid) {
+  state.scores[id] = val;
+  buildQuestionPages();
+  // Re-render current page content without navigating
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pid).classList.add('active');
+}
+
+function recordObs(id) {
+  const el = document.getElementById(`obs-${id}`);
+  if(el) state.observations[id] = el.value;
+}
+
+// ── BUILD RESULTS ─────────────────────────────────────────────────
+function buildResults() {
+  // Collect observations before leaving question pages
+  SECTIONS.forEach(sec=>{
+    const el=document.getElementById(`obs-${sec.id}`);
+    if(el) state.observations[sec.id]=el.value;
+  });
+
+  const org = document.getElementById('org-name').value || 'NMB Bank Zimbabwe';
+  const date = document.getElementById('org-date').value || '';
+  const parts = document.getElementById('org-participants').value || '';
+  const fac = document.getElementById('org-facilitator').value || 'AXION AI';
+
+  // Scores
+  const dimResults = SECTIONS.map(sec=>{
+    const s = state.scores[sec.id] ?? 0;
+    const pct = Math.round((s/3)*100);
+    return { ...sec, score:s, pct };
+  });
+  const total = dimResults.reduce((a,d)=>a+d.score,0);
+  const maxTotal = SECTIONS.length * 3;
+  const overallPct = Math.round((total/maxTotal)*100);
+
+  // Maturity level
+  const level = overallPct < 25
+    ? {label:'Initial',     desc:'AI governance is largely absent. Material regulatory and reputational risk is present and unmanaged.',           bg:'#FCEBEB',c:'#A32D2D',b:'#F09595'}
+    : overallPct < 50
+    ? {label:'Developing',  desc:'Some governance elements exist but are insufficient for a regulated financial institution. Structured remediation required.', bg:'#FAEEDA',c:'#854F0B',b:'#EF9F27'}
+    : overallPct < 75
+    ? {label:'Established', desc:'Core governance is in place. Focus on embedding, independent audit, and board-level reporting.',                 bg:'#E6F1FB',c:'#185FA5',b:'#85B7EB'}
+    : {label:'Advanced',    desc:'Strong governance posture. Focus on certification, benchmarking, and external disclosure.',           bg:'#E1F5EE',c:'#0F6E56',b:'#5DCAA5'};
+
+  // Organisation label
+  document.getElementById('res-org-label').textContent =
+    `${org}${date?' · '+date:''}${parts?' · '+parts:''}${fac?' · Facilitated by '+fac:''}`;
+
+  // Banner
+  document.getElementById('res-banner').style.cssText=`background:${level.bg};border:1.5px solid ${level.b};`;
+  document.getElementById('res-banner').innerHTML=`
+    <div>
+      <div class="level-label" style="color:${level.c};">Maturity Level</div>
+      <div class="level-name" style="color:${level.c};">${level.label}</div>
+      <div class="level-desc" style="color:${level.c};">${level.desc}</div>
+    </div>
+    <div>
+      <div class="score-big" style="color:${level.c};">${overallPct}%</div>
+      <div class="score-sub" style="color:${level.c};">overall readiness<br>${total} / ${maxTotal} points</div>
+    </div>
+  `;
+
+  // Dimension cards
+  document.getElementById('res-dims').innerHTML = dimResults.map(d=>{
+    const barColor = d.score===0?'#E24B4A':d.score===1?'#EF9F27':d.score===2?'#EF9F27':'#1D9E75';
+    const lbl = d.score===0?'Not in place':d.score===1?'Partial':d.score===2?'Mostly':'In place';
+    return `
+      <div class="dim-card" style="border-top:3px solid ${d.color};">
+        <div class="dim-card-title">${d.title}</div>
+        <div class="dim-card-score" style="color:${d.color};">${d.score}/3</div>
+        <div class="dim-card-label" style="color:${barColor};">${lbl}</div>
+        <div class="dim-bar-wrap"><div class="dim-bar-fill" style="width:${d.pct}%;background:${barColor};"></div></div>
+      </div>
+    `;
+  }).join('');
+
+  // Findings
+  const sorted = [...dimResults].sort((a,b)=>a.score-b.score);
+  const gaps = sorted.filter(d=>d.score<=1);
+  const hasGaps = gaps.length > 0;
+  const strengths = [...dimResults].filter(d=>d.score>=2).sort((a,b)=>b.score-a.score);
+  const hasStrengths = strengths.length > 0;
+  const hasObservations = SECTIONS.some(s=>state.observations[s.id]&&state.observations[s.id].trim());
+
+  document.getElementById('res-findings').innerHTML=`
+    <div class="finding-card" style="border-left:3px solid ${hasGaps?'var(--red)':'var(--teal)'};">
+      <h4 style="color:${hasGaps?'var(--red)':'var(--teal)'};">${hasGaps?'Top governance gaps':'No critical gaps identified'}</h4>
+      ${hasGaps
+        ? gaps.map(d=>`
+          <div class="finding-item" style="background:var(--red-lite);">
+            <strong style="color:var(--red);">${d.title}</strong> - scored ${d.score}/3
+            ${state.observations[d.id]?`<div class="obs-display">"${state.observations[d.id]}"</div>`:''}
+          </div>
+        `).join('')
+        : `<div class="finding-item" style="background:var(--teal-lite);">
+            <span style="color:var(--teal-dark);">All dimensions meet or exceed the minimum governance threshold. The focus should now be on embedding, independent audit, and preparing for formal certification.</span>
+           </div>`
+      }
+    </div>
+    <div class="finding-card" style="border-left:3px solid ${hasStrengths?'var(--teal)':'var(--gray)'};">
+      <h4 style="color:${hasStrengths?'var(--teal)':'var(--gray)'};">${hasStrengths?'Existing strengths':'No established strengths identified'}</h4>
+      ${hasStrengths
+        ? strengths.map(d=>`
+          <div class="finding-item" style="background:var(--teal-lite);">
+            <strong style="color:var(--teal-dark);">${d.title}</strong> - scored ${d.score}/3
+            ${state.observations[d.id]?`<div class="obs-display">"${state.observations[d.id]}"</div>`:''}
+          </div>
+        `).join('')
+        : `<div class="finding-item" style="background:var(--gray-lite);">
+            <span style="color:var(--gray-mid);">All dimensions require foundational governance work. No area currently meets the threshold for an established governance practice. This is the starting point - not a permanent position.</span>
+           </div>`
+      }
+      ${hasObservations?`
+      <div class="finding-item" style="background:var(--gray-lite);margin-top:.5rem;">
+        <strong style="color:var(--gray);">All dimension observations</strong>
+        ${SECTIONS.map(s=>state.observations[s.id]&&state.observations[s.id].trim()?`<div class="obs-display">${s.title}: "${state.observations[s.id]}"</div>`:'').join('')}
+      </div>`:''}
+    </div>
+  `;
+
+  // Next steps — comprehensive conditional logic
+  const d1 = dimResults.find(d=>d.id==='d1')?.score ?? 0;
+  const d2 = dimResults.find(d=>d.id==='d2')?.score ?? 0;
+  const d3 = dimResults.find(d=>d.id==='d3')?.score ?? 0;
+  const d4 = dimResults.find(d=>d.id==='d4')?.score ?? 0;
+  const d5 = dimResults.find(d=>d.id==='d5')?.score ?? 0;
+
+  const allNextSteps = [
+    // ── URGENT ──────────────────────────────────────────────────
+    { label:'Urgent', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Full AI Governance Readiness Assessment - establish a complete, auditable governance baseline before any further AI deployment',
+      show: overallPct < 50 },
+
+    { label:'Urgent', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'AI Governance Framework - your organisation has no documented AI policy or named accountability owner. This is the highest-priority gap for a regulated institution.',
+      show: d1 === 0 },
+
+    { label:'Urgent', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'AI Risk Management Framework - no structured risk assessment process exists before AI systems are deployed. Material regulatory and operational risk is unmanaged.',
+      show: d2 === 0 || d3 === 0 },
+
+    { label:'Urgent', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'AI Ethics & Acceptable Use Policy - no staff training, customer transparency, or grievance mechanism exists. This is a legal obligation under Zimbabwean law.',
+      show: d4 === 0 },
+
+    // ── PRIORITY ─────────────────────────────────────────────────
+    { label:'Priority', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'AI Governance Framework - a policy and accountability structure exists partially but is not documented or board-approved. Formalise ownership and policy before the next board cycle.',
+      show: d1 === 1 },
+
+    { label:'Priority', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'AI Risk Management Framework - risk assessment practices are partial or inconsistent. Structured risk classification and vendor governance processes are needed.',
+      show: (d2 === 1 || d3 === 1) && d2 !== 0 && d3 !== 0 },
+
+    { label:'Priority', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'AI Ethics & Acceptable Use Policy - staff training and customer transparency practices are partial. Formalise disclosure obligations and internal concern-raising channels.',
+      show: d4 === 1 },
+
+    { label:'Priority', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Internal audit scope extension - AI governance is not within your audit committee\'s mandate. This is a governance gap that external auditors and regulators will identify.',
+      show: d5 <= 1 },
+
+    { label:'Priority', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Full AI Governance Readiness Assessment - a formal baseline assessment is recommended before pursuing certification or a retained advisory programme.',
+      show: overallPct >= 50 && overallPct < 75 },
+
+    // ── RECOMMENDED ──────────────────────────────────────────────
+    { label:'Recommended', cls:'background:#E6F1FB;color:#185FA5;',
+      text:'Board & Audit Committee AI Governance Training - structured training on director AI oversight obligations, risk reporting, and governance accountability.',
+      show: d5 === 0 || d5 === 1 || d5 === 2 },
+
+    { label:'Recommended', cls:'background:#E6F1FB;color:#185FA5;',
+      text:'AI Governance Certification Readiness Programme - prepare your organisation for formal AI governance certification by an accredited independent body.',
+      show: overallPct >= 50 },
+
+    { label:'Recommended', cls:'background:#E1F5EE;color:#085041;',
+      text:'Retained AI Governance Advisory - ongoing quarterly reviews, annual framework updates, board reporting support, and unlimited advisory queries.',
+      show: overallPct >= 25 },
+
+    { label:'Recommended', cls:'background:#E1F5EE;color:#085041;',
+      text:'Annual AI Governance Audit - independent verification of your governance posture to confirm that practices meet the standards your board has approved.',
+      show: d5 === 3 && overallPct >= 75 },
+
+    { label:'Recommended', cls:'background:#E1F5EE;color:#085041;',
+      text:'Publish an AI Governance Statement - demonstrate to shareholders, regulators, and clients that your organisation leads on AI accountability in the sector.',
+      show: overallPct === 100 },
+  ];
+
+  // Rule 1: Count urgent items
+  const urgentItems = allNextSteps.filter(n=>n.show && n.label==='Urgent');
+  const urgentCount = urgentItems.length;
+
+  // Rule 2: If 3+ urgent items, suppress Recommended entirely
+  // Rule 3: Never show more than 5 total
+  // Rule 4: Perfect score — suppress all gap items, show only certification/advisory
+  let nextSteps;
+  if (overallPct === 100) {
+    nextSteps = allNextSteps.filter(n=>n.show && n.label==='Recommended').slice(0,3);
+  } else if (urgentCount >= 3) {
+    nextSteps = allNextSteps.filter(n=>n.show && (n.label==='Urgent'||n.label==='Priority')).slice(0,5);
+  } else {
+    nextSteps = allNextSteps.filter(n=>n.show).slice(0,5);
+  }
+
+  document.getElementById('res-next').innerHTML=`
+    <h4>Recommended next steps for ${org}</h4>
+    ${nextSteps.map(n=>`
+      <div class="next-step-item">
+        <span class="ns-badge" style="${n.cls}">${n.label}</span>
+        <span>${n.text}</span>
+      </div>
+    `).join('')}
+    <div style="margin-top:1rem;padding:.75rem;background:var(--gold-lite);border-radius:7px;border:1px solid #e8c87a;font-size:.82rem;color:var(--navy);">
+      <strong>To discuss these recommendations:</strong> Contact AXION AI at <strong>info@axionadvisory.net</strong> or visit <strong>axionadvisory.net</strong>
+    </div>
+  `;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+buildQuestionPages();
+</script>
+</body>
+</html>
