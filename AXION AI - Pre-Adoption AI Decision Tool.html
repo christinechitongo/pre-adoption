@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)file:///C:/Users/chris/Downloads/AXION_AI_Pre_Adoption_Decision_Tool.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXION AI - Pre-Adoption AI Decision Tool</title>
+<link href="./AXION AI - Pre-Adoption AI Decision Tool_files/css2" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0D2B4E;--navy-mid:#1A3E6A;--navy-lite:#E8EEF5;
+  --gold:#B8860B;--gold-lite:#FDF6E3;
+  --teal:#1D9E75;--teal-dark:#085041;--teal-lite:#E1F5EE;
+  --purple:#534AB7;--purple-lite:#EEEDFE;
+  --amber:#BA7517;--amber-lite:#FAEEDA;
+  --blue:#185FA5;--blue-lite:#E6F1FB;
+  --red:#A32D2D;--red-lite:#FCEBEB;
+  --gray:#444441;--gray-mid:#888780;--gray-lite:#F1EFE8;
+  --border:#D3D1C7;--white:#fff;--parchment:#F8F7F4;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--parchment);color:var(--gray);line-height:1.6;}
+@media print{
+  .no-print{display:none!important;}
+  body{background:white;}
+  .card{box-shadow:none!important;border:1px solid var(--border)!important;}
+}
+
+/* NAV */
+.topbar{background:var(--navy);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{font-family:'Playfair Display',serif;color:white;font-size:1.1rem;}
+.topbar-sub{font-size:.7rem;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;}
+.btn{padding:8px 20px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;border:none;}
+.btn-gold{background:var(--gold);color:white;}
+.btn-gold:hover{background:#9a6f09;}
+.btn-outline{background:transparent;color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.3);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-navy{background:var(--navy);color:white;}
+.btn-lg{padding:12px 32px;font-size:.95rem;}
+
+/* PROGRESS */
+.prog-bar{background:white;border-bottom:1px solid var(--border);padding:.6rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:56px;z-index:90;}
+.prog-dots{display:flex;gap:4px;flex:1;}
+.dot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s;}
+.dot.done{background:var(--teal);}
+.dot.active{background:var(--gold);}
+.prog-label{font-size:.72rem;color:var(--gray-mid);}
+.prog-pct{font-size:.72rem;font-weight:600;color:var(--gold);}
+
+/* PAGES */
+.page{display:none;animation:fadeUp .3s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.container{max-width:860px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+.container-wide{max-width:1060px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+
+/* HERO */
+.hero{background:var(--navy);padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(184,134,11,.1) 0%,transparent 65%);}
+.hero-tag{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:white;margin-bottom:.75rem;position:relative;}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero p{color:rgba(255,255,255,.65);max-width:520px;margin:0 auto 2rem;font-size:.95rem;position:relative;}
+.hero-badges{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;position:relative;}
+.badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);font-size:.68rem;padding:3px 10px;border-radius:3px;letter-spacing:.05em;font-weight:500;}
+.hero-meta{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;position:relative;}
+.hero-meta-item{text-align:center;}
+.hero-meta-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);}
+.hero-meta-label{font-size:.72rem;color:rgba(255,255,255,.5);}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--border);border-radius:10px;margin-bottom:1rem;}
+
+/* ORG FORM */
+.org-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--navy);margin-bottom:.4rem;}
+.form-group input, .form-group select{width:100%;padding:9px 13px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--gray);outline:none;transition:border-color .2s;}
+.form-group input:focus, .form-group select:focus{border-color:var(--gold);}
+@media(max-width:600px){.org-form{grid-template-columns:1fr;}}
+
+/* SECTION HEADER */
+.sec-head{margin:2rem 0 1rem;}
+.sec-head .eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.4rem;}
+.sec-head p{font-size:.88rem;color:var(--gray-mid);}
+
+/* GATE CARD */
+.gate-card{background:white;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem;}
+.gate-card-header{padding:.9rem 1.25rem;display:flex;align-items:center;gap:.9rem;}
+.gate-badge{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0;}
+.gate-title{font-size:.95rem;font-weight:600;flex:1;}
+.gate-body{padding:1rem 1.25rem;border-top:1px solid var(--gray-lite);}
+.gate-question{font-size:.9rem;font-weight:500;color:var(--navy);margin-bottom:.5rem;line-height:1.5;}
+.gate-why{font-size:.78rem;color:var(--gray-mid);margin-bottom:1rem;font-style:italic;}
+.gate-prompts{margin-bottom:1rem;}
+.gate-prompt-label{font-size:.72rem;font-weight:600;color:var(--gray-mid);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;}
+.gate-prompt{font-size:.8rem;color:var(--gray);margin-bottom:.3rem;padding-left:.75rem;border-left:2px solid var(--border);}
+
+/* GATE SCORE BUTTONS - 3 options */
+.gate-score-row{display:flex;gap:8px;}
+.gate-btn{flex:1;padding:12px 8px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;transition:all .2s;text-align:center;line-height:1.4;border:2px solid var(--border);background:transparent;color:var(--gray-mid);}
+.gate-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.gate-btn.cleared{background:var(--teal-lite);border-color:var(--teal);color:var(--teal-dark);}
+.gate-btn.partial{background:var(--amber-lite);border-color:var(--amber);color:var(--amber);}
+.gate-btn.not-cleared{background:var(--red-lite);border-color:var(--red);color:var(--red);}
+
+.obs-row{margin-top:.75rem;}
+.obs-row label{font-size:.75rem;font-weight:600;color:var(--gray-mid);margin-bottom:.3rem;display:block;}
+.obs-row textarea{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--gray);resize:vertical;min-height:52px;outline:none;transition:border-color .2s;}
+.obs-row textarea:focus{border-color:var(--gold);}
+
+/* NAV BAR */
+.nav-bar{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0 0;gap:1rem;}
+.btn-back{background:white;border:1.5px solid var(--border);color:var(--gray);padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;}
+.btn-back:hover{border-color:var(--gray);}
+.btn-next{background:var(--navy);border:none;color:white;padding:10px 28px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;}
+.btn-next:hover{background:var(--navy-mid);}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;}
+
+/* RESULTS */
+.decision-banner{border-radius:12px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.decision-banner::before{content:'';position:absolute;inset:0;opacity:.05;}
+.decision-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;}
+.decision-title{font-family:'Playfair Display',serif;font-size:2.2rem;margin-bottom:.75rem;}
+.decision-desc{font-size:.9rem;line-height:1.6;max-width:520px;opacity:.9;}
+.decision-score{font-family:'Playfair Display',serif;font-size:2.8rem;text-align:right;}
+.decision-score-sub{font-size:.72rem;opacity:.65;text-align:right;margin-top:2px;}
+.decision-banner-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+
+/* GATE STATUS GRID */
+.gate-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;margin-bottom:1.5rem;}
+@media(max-width:700px){.gate-grid{grid-template-columns:1fr 1fr;}}
+.gate-result-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1rem;text-align:center;}
+.gate-result-title{font-size:.72rem;color:var(--gray-mid);margin-bottom:.4rem;line-height:1.3;}
+.gate-result-status{font-size:.95rem;font-weight:700;margin-bottom:.25rem;}
+.gate-result-icon{font-size:1.4rem;margin-bottom:.3rem;}
+.gate-status-bar{height:5px;border-radius:3px;margin-top:.5rem;}
+
+/* FINDINGS */
+.findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:600px){.findings-grid{grid-template-columns:1fr;}}
+.finding-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1.1rem;}
+.finding-card h4{font-size:.82rem;font-weight:600;margin-bottom:.75rem;}
+.finding-item{font-size:.8rem;color:var(--gray);margin-bottom:.5rem;padding:.5rem .75rem;border-radius:6px;line-height:1.45;}
+.obs-display{font-size:.75rem;color:var(--gray-mid);margin-top:.25rem;font-style:italic;}
+
+/* CONDITIONS TABLE */
+.conditions-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1.25rem;margin-bottom:1.5rem;}
+.conditions-card h4{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.75rem;}
+.condition-item{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--gray-lite);font-size:.82rem;color:var(--gray);}
+.condition-item:last-child{border-bottom:none;}
+.cond-gate{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;}
+
+/* NEXT STEPS */
+.next-steps-card{background:white;border:1px solid var(--border);border-radius:9px;padding:1.25rem;margin-bottom:1.5rem;}
+.next-steps-card h4{font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:.75rem;}
+.next-step-item{display:flex;align-items:flex-start;gap:.75rem;padding:.65rem 0;border-bottom:1px solid var(--gray-lite);font-size:.82rem;color:var(--gray);}
+.next-step-item:last-child{border-bottom:none;}
+.ns-badge{font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+
+.actions-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;}
+.btn-print{background:var(--teal);border:none;color:white;padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;}
+.btn-print:hover{background:var(--teal-dark);}
+.btn-restart{background:white;border:1.5px solid var(--border);color:var(--gray);padding:10px 22px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;}
+.axion-footer{background:var(--navy);color:rgba(255,255,255,.6);padding:1.25rem 1.5rem;border-radius:9px;margin-top:1.5rem;text-align:center;font-size:.8rem;}
+.axion-footer strong{color:var(--gold);}
+.disclaimer{font-size:.7rem;color:var(--gray-mid);margin-top:1.5rem;line-height:1.6;padding:.75rem 1rem;background:var(--gray-lite);border-radius:7px;}
+</style>
+</head>
+<body>
+
+<nav class="topbar no-print">
+  <div>
+    <div class="topbar-logo">AXION AI</div>
+    <div class="topbar-sub">Governance · Risk · Accountability</div>
+  </div>
+  <div style="display:flex;gap:.75rem;align-items:center;">
+    <span style="font-size:.78rem;color:rgba(255,255,255,.5);">Pre-Adoption AI Decision Tool</span>
+    <button class="btn btn-outline" onclick="restart()">Start over</button>
+  </div>
+</nav>
+
+<div id="prog-bar" class="prog-bar no-print" style="display:none!important;">
+  <div class="prog-label" id="prog-label">Step 1 of 7</div>
+  <div class="prog-dots" id="prog-dots"></div>
+  <div class="prog-pct" id="prog-pct">0%</div>
+</div>
+
+<!-- LANDING -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero-tag">AXION AI · Pre-Adoption Decision Tool</div>
+    <h1>Should your organisation<br>adopt <em>AI?</em></h1>
+    <p>A structured 5-minute diagnostic that gives your board a clear, documented answer - before any AI system is procured, deployed, or integrated.</p>
+    <div class="hero-badges">
+      <span class="badge">5 gates</span>
+      <span class="badge">5 minutes</span>
+      <span class="badge">Board-ready output</span>
+      <span class="badge">Any organisation type</span>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="hero-meta-num">5</div><div class="hero-meta-label">Decision gates</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">3</div><div class="hero-meta-label">Possible verdicts</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">5</div><div class="hero-meta-label">Minutes</div></div>
+      <div class="hero-meta-item"><div class="hero-meta-num">0</div><div class="hero-meta-label">Prior knowledge needed</div></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>A gate-based decision framework.</h2>
+      <p>Unlike a scoring tool, this is a decision tool. Each gate either clears, partially clears, or does not clear. Your final verdict - Proceed, Proceed with Conditions, or Do Not Proceed Yet - is determined by how many gates your organisation can honestly clear.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">🎯</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Gate 1: Strategic Rationale</div><div style="font-size:.8rem;color:var(--gray-mid);">Is there a genuine, documented business reason to adopt AI - or is this market pressure?</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">✅</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Gate 2: Organisational Readiness</div><div style="font-size:.8rem;color:var(--gray-mid);">Does the organisation have the leadership, data, and people to govern AI responsibly?</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">⚠️</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Gate 3: Risk &amp; Ethics</div><div style="font-size:.8rem;color:var(--gray-mid);">Have the specific risks - to staff, customers, data, and reputation - been assessed?</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">📋</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Gate 4: Adoption Conditions</div><div style="font-size:.8rem;color:var(--gray-mid);">Are the minimum governance conditions in place before any AI system goes live?</div></div>
+      <div class="card" style="padding:1.25rem;"><div style="font-size:1.4rem;margin-bottom:.5rem;">🏛</div><div style="font-weight:600;font-size:.9rem;color:var(--navy);margin-bottom:.3rem;">Gate 5: Governance Structure</div><div style="font-size:.8rem;color:var(--gray-mid);">Is there a board-level governance structure to oversee AI on an ongoing basis?</div></div>
+    </div>
+    <div style="text-align:center;">
+      <button class="btn btn-gold btn-lg" onclick="goTo(&#39;page-org&#39;)">Begin Assessment →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORG DETAILS -->
+<div class="page" id="page-org">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Step 1 of 7 - Organisation details</div>
+      <h2>Tell us about your organisation</h2>
+      <p>These appear on your board decision summary.</p>
+    </div>
+    <div class="card" style="padding:1.5rem;">
+      <div class="org-form">
+        <div class="form-group"><label>Organisation name</label><input id="org-name" type="text" placeholder="Your organisation name"></div>
+        <div class="form-group"><label>Organisation type</label>
+          <select id="org-type">
+            <option value="">Select type</option>
+            <option>Listed company / Corporate</option>
+            <option>SME / Startup</option>
+            <option>Government ministry / Agency</option>
+            <option>NGO / Civil society</option>
+            <option>University / Research body</option>
+            <option>Board / Regulatory body</option>
+          </select>
+        </div>
+        <div class="form-group"><label>AI system being considered</label><input id="ai-system" type="text" placeholder="e.g. AI credit scoring, HR automation, chatbot"></div>
+        <div class="form-group"><label>Assessment date</label><input id="org-date" type="text" placeholder="e.g. 15 January 2025"></div>
+        <div class="form-group"><label>Completed by</label><input id="org-lead" type="text" placeholder="Name and title"></div>
+        <div class="form-group"><label>Facilitated by</label><input id="org-facilitator" type="text" value="AXION AI (Private) Limited" placeholder="Facilitator"></div>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn-back" onclick="goTo(&#39;page-landing&#39;)">← Back</button>
+      <button class="btn-next" onclick="goTo(&#39;page-g0&#39;)">Begin →</button>
+    </div>
+  </div>
+</div>
+
+<!-- GATE PAGES -->
+<div class="page" id="page-g0">
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step 2 of 7 - Gate 1 of 5</div>
+          <h2>Strategic Rationale</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:#EEEDFE30;border-bottom:1px solid #EEEDFE;">
+            <div class="gate-badge" style="background:#EEEDFE;color:#534AB7;">1</div>
+            <div>
+              <div class="gate-title" style="color:#534AB7;">Gate 1: Strategic Rationale</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">Can your organisation articulate a clear, documented business reason for adopting AI - one that would withstand scrutiny from your board, your auditors, and your regulators?</div>
+            <div class="gate-why">Why this gate matters: Organisations that adopt AI without a clear rationale are more likely to adopt the wrong system, at the wrong time, for the wrong reasons - and be unable to account for their decision when things go wrong.</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              <div class="gate-prompt">→  Is there a written business case or strategic note approved by management?</div><div class="gate-prompt">→  Is this AI solving a specific, named problem - or responding to market pressure?</div><div class="gate-prompt">→  Have non-AI alternatives been evaluated and found insufficient?</div>
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn " onclick="score(&#39;g1&#39;,&#39;cleared&#39;,&#39;page-g0&#39;)">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">A documented rationale exists, has been reviewed, and is tied to a specific business objective.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g1&#39;,&#39;partial&#39;,&#39;page-g0&#39;)">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">A rationale exists informally or is in development - not yet documented or board-approved.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g1&#39;,&#39;not-cleared&#39;,&#39;page-g0&#39;)">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">No clear rationale has been articulated. The organisation is responding to external pressure rather than internal need.</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-g1" placeholder="Record the key point that emerged..." onchange="recordObs(&#39;g1&#39;)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo(&#39;page-org&#39;)">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              Assess this gate to continue
+            </div>
+            <button class="btn-next" disabled="" onclick="goTo(&#39;page-g1&#39;);">
+              Next Gate →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="page" id="page-g1">
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step 3 of 7 - Gate 2 of 5</div>
+          <h2>Organisational Readiness</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:#E1F5EE30;border-bottom:1px solid #E1F5EE;">
+            <div class="gate-badge" style="background:#E1F5EE;color:#1D9E75;">2</div>
+            <div>
+              <div class="gate-title" style="color:#1D9E75;">Gate 2: Organisational Readiness</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">Does your organisation have the minimum leadership, data, and people capability to adopt AI responsibly - or would deploying AI today create risks you cannot currently manage?</div>
+            <div class="gate-why">Why this gate matters: An organisation that cannot govern AI will not govern it well, regardless of how good the AI system is. Readiness is a governance question, not a technical one.</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              <div class="gate-prompt">→  Is there a named senior leader responsible for this AI adoption decision?</div><div class="gate-prompt">→  Does the organisation have the legal right to use the data the AI system requires?</div><div class="gate-prompt">→  Have the staff who will use or be affected by this AI system been identified?</div>
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn " onclick="score(&#39;g2&#39;,&#39;cleared&#39;,&#39;page-g1&#39;)">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Leadership accountability is assigned, data rights are confirmed, and affected staff are identified and will be prepared.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g2&#39;,&#39;partial&#39;,&#39;page-g1&#39;)">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Some readiness conditions are in place but gaps exist - particularly around data rights or staff preparation.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g2&#39;,&#39;not-cleared&#39;,&#39;page-g1&#39;)">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">The organisation lacks a named owner, data readiness, or staff preparation. Deployment would be premature.</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-g2" placeholder="Record the key point that emerged..." onchange="recordObs(&#39;g2&#39;)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo(&#39;page-g0&#39;)">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              Assess this gate to continue
+            </div>
+            <button class="btn-next" disabled="" onclick="goTo(&#39;page-g2&#39;);">
+              Next Gate →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="page" id="page-g2">
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step 4 of 7 - Gate 3 of 5</div>
+          <h2>Risk &amp; Ethics Review</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:#FAEEDA30;border-bottom:1px solid #FAEEDA;">
+            <div class="gate-badge" style="background:#FAEEDA;color:#BA7517;">3</div>
+            <div>
+              <div class="gate-title" style="color:#BA7517;">Gate 3: Risk &amp; Ethics Review</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">Has the organisation formally assessed the specific risks this AI system creates - to staff, customers, data, and reputation - and made a conscious decision to accept or mitigate them?</div>
+            <div class="gate-why">Why this gate matters: Every AI system carries risk. Accountability for those risks begins at the decision to adopt - not at the moment something goes wrong. An undocumented risk is an unmanaged risk.</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              <div class="gate-prompt">→  Has a risk assessment been completed covering bias, data quality, and regulatory compliance?</div><div class="gate-prompt">→  Have the impacts on staff, customers, and vulnerable groups been considered?</div><div class="gate-prompt">→  Has the organisation reviewed the vendor's data handling and accountability obligations?</div>
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn " onclick="score(&#39;g3&#39;,&#39;cleared&#39;,&#39;page-g2&#39;)">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">A formal risk and ethics assessment has been completed and documented. Key risks are named, owned, and have mitigation plans.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g3&#39;,&#39;partial&#39;,&#39;page-g2&#39;)">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Risks have been discussed but not formally documented or assigned to owners. The assessment is incomplete.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g3&#39;,&#39;not-cleared&#39;,&#39;page-g2&#39;)">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">No risk or ethics assessment has been conducted. The organisation does not have a documented view of what it is accepting.</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-g3" placeholder="Record the key point that emerged..." onchange="recordObs(&#39;g3&#39;)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo(&#39;page-g1&#39;)">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              Assess this gate to continue
+            </div>
+            <button class="btn-next" disabled="" onclick="goTo(&#39;page-g3&#39;);">
+              Next Gate →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="page" id="page-g3">
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step 5 of 7 - Gate 4 of 5</div>
+          <h2>Adoption Conditions</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:#E6F1FB30;border-bottom:1px solid #E6F1FB;">
+            <div class="gate-badge" style="background:#E6F1FB;color:#185FA5;">4</div>
+            <div>
+              <div class="gate-title" style="color:#185FA5;">Gate 4: Adoption Conditions</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">Are the minimum governance conditions in place - or committed to - before any AI system goes live in your organisation?</div>
+            <div class="gate-why">Why this gate matters: Governance built before AI goes live is always cheaper, faster, and more defensible than governance retrofitted after a problem. These conditions are the non-negotiable floor.</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              <div class="gate-prompt">→  Is there a named accountable officer for this AI system beyond the IT department?</div><div class="gate-prompt">→  Is there a plan to train staff before the system goes live?</div><div class="gate-prompt">→  Is there a fallback process if the AI system fails or produces harmful outputs?</div>
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn " onclick="score(&#39;g4&#39;,&#39;cleared&#39;,&#39;page-g3&#39;)">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Minimum conditions are in place or formally committed to before go-live: accountability, training, monitoring, and a fallback process.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g4&#39;,&#39;partial&#39;,&#39;page-g3&#39;)">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Some conditions are in place but others are still outstanding - particularly monitoring or fallback procedures.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g4&#39;,&#39;not-cleared&#39;,&#39;page-g3&#39;)">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">Minimum conditions have not been established. Deployment would leave the organisation without basic operational safeguards.</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-g4" placeholder="Record the key point that emerged..." onchange="recordObs(&#39;g4&#39;)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo(&#39;page-g2&#39;)">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              Assess this gate to continue
+            </div>
+            <button class="btn-next" disabled="" onclick="goTo(&#39;page-g4&#39;);">
+              Next Gate →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="page" id="page-g4">
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step 6 of 7 - Gate 5 of 5</div>
+          <h2>Governance Structure</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:#F1EFE830;border-bottom:1px solid #F1EFE8;">
+            <div class="gate-badge" style="background:#F1EFE8;color:#444441;">5</div>
+            <div>
+              <div class="gate-title" style="color:#444441;">Gate 5: Governance Structure</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">Does your organisation have - or is it committed to building - a board-level governance structure that will oversee AI on an ongoing basis after adoption?</div>
+            <div class="gate-why">Why this gate matters: AI governance is not a one-time exercise. Systems change, outputs drift, and regulatory requirements evolve. Without an ongoing governance structure, today's responsible adoption becomes tomorrow's unmanaged risk.</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              <div class="gate-prompt">→  Has the board or governing authority been briefed on this AI adoption decision?</div><div class="gate-prompt">→  Is there a process to review AI system performance after go-live?</div><div class="gate-prompt">→  Will AI governance be included in the organisation's audit or risk reporting?</div>
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn " onclick="score(&#39;g5&#39;,&#39;cleared&#39;,&#39;page-g4&#39;)">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">The board is engaged, a post-adoption review process is committed to, and AI governance is within the audit or risk oversight mandate.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g5&#39;,&#39;partial&#39;,&#39;page-g4&#39;)">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">The board is aware but post-adoption governance structures are not yet formally established.</span>
+              </button>
+              <button class="gate-btn " onclick="score(&#39;g5&#39;,&#39;not-cleared&#39;,&#39;page-g4&#39;)">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">No ongoing governance structure exists or is planned. Adoption would proceed without institutional oversight.</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-g5" placeholder="Record the key point that emerged..." onchange="recordObs(&#39;g5&#39;)"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo(&#39;page-g3&#39;)">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              Assess this gate to continue
+            </div>
+            <button class="btn-next" disabled="" onclick="goTo(&#39;page-results&#39;);buildResults();">
+              See Decision →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- RESULTS -->
+<div class="page" id="page-results">
+  <div class="container-wide">
+    <div class="sec-head">
+      <div class="eyebrow">Assessment complete</div>
+      <h2>Board Decision Summary</h2>
+      <p id="res-org-label"></p>
+    </div>
+    <div id="res-banner" class="decision-banner"></div>
+    <div class="gate-grid" id="res-gates"></div>
+    <div class="findings-grid" id="res-findings"></div>
+    <div class="conditions-card" id="res-conditions" style="display:none;"></div>
+    <div class="next-steps-card" id="res-next"></div>
+    <div class="axion-footer">
+      <strong>AXION AI (Private) Limited</strong> · Zimbabwe's specialist AI governance and risk advisory practice ·
+      <strong>info@axionadvisory.net</strong> · axionadvisory.net · Certified AI Governance Advisors
+    </div>
+    <div class="actions-row no-print">
+      <button class="btn-restart" onclick="restart()">← Start over</button>
+      <button class="btn-print" onclick="window.print()">🖨 Print board decision summary</button>
+    </div>
+    <div class="disclaimer">
+      This is an indicative self-assessment for discussion purposes. It does not constitute legal advice or a formal governance audit. The decision to adopt AI remains with the organisation's board or governing authority. Results should be validated through a full Pre-Adoption AI Decision engagement with AXION AI. Prepared by AXION AI (Private) Limited, Harare, Zimbabwe.
+    </div>
+  </div>
+</div>
+
+<script>
+// ── GATE DATA ─────────────────────────────────────────────────────
+const GATES = [
+  {
+    id:'g1', title:'Strategic Rationale', gate:'Gate 1',
+    color:'#534AB7', lite:'#EEEDFE',
+    question:'Can your organisation articulate a clear, documented business reason for adopting AI - one that would withstand scrutiny from your board, your auditors, and your regulators?',
+    why:'Organisations that adopt AI without a clear rationale are more likely to adopt the wrong system, at the wrong time, for the wrong reasons - and be unable to account for their decision when things go wrong.',
+    prompts:[
+      'Is there a written business case or strategic note approved by management?',
+      'Is this AI solving a specific, named problem - or responding to market pressure?',
+      'Have non-AI alternatives been evaluated and found insufficient?',
+    ],
+    cleared_desc:'A documented rationale exists, has been reviewed, and is tied to a specific business objective.',
+    partial_desc:'A rationale exists informally or is in development - not yet documented or board-approved.',
+    not_desc:'No clear rationale has been articulated. The organisation is responding to external pressure rather than internal need.',
+  },
+  {
+    id:'g2', title:'Organisational Readiness', gate:'Gate 2',
+    color:'#1D9E75', lite:'#E1F5EE',
+    question:'Does your organisation have the minimum leadership, data, and people capability to adopt AI responsibly - or would deploying AI today create risks you cannot currently manage?',
+    why:'An organisation that cannot govern AI will not govern it well, regardless of how good the AI system is. Readiness is a governance question, not a technical one.',
+    prompts:[
+      'Is there a named senior leader responsible for this AI adoption decision?',
+      'Does the organisation have the legal right to use the data the AI system requires?',
+      'Have the staff who will use or be affected by this AI system been identified?',
+    ],
+    cleared_desc:'Leadership accountability is assigned, data rights are confirmed, and affected staff are identified and will be prepared.',
+    partial_desc:'Some readiness conditions are in place but gaps exist - particularly around data rights or staff preparation.',
+    not_desc:'The organisation lacks a named owner, data readiness, or staff preparation. Deployment would be premature.',
+  },
+  {
+    id:'g3', title:'Risk & Ethics Review', gate:'Gate 3',
+    color:'#BA7517', lite:'#FAEEDA',
+    question:'Has the organisation formally assessed the specific risks this AI system creates - to staff, customers, data, and reputation - and made a conscious decision to accept or mitigate them?',
+    why:'Every AI system carries risk. Accountability for those risks begins at the decision to adopt - not at the moment something goes wrong. An undocumented risk is an unmanaged risk.',
+    prompts:[
+      'Has a risk assessment been completed covering bias, data quality, and regulatory compliance?',
+      'Have the impacts on staff, customers, and vulnerable groups been considered?',
+      'Has the organisation reviewed the vendor\'s data handling and accountability obligations?',
+    ],
+    cleared_desc:'A formal risk and ethics assessment has been completed and documented. Key risks are named, owned, and have mitigation plans.',
+    partial_desc:'Risks have been discussed but not formally documented or assigned to owners. The assessment is incomplete.',
+    not_desc:'No risk or ethics assessment has been conducted. The organisation does not have a documented view of what it is accepting.',
+  },
+  {
+    id:'g4', title:'Adoption Conditions', gate:'Gate 4',
+    color:'#185FA5', lite:'#E6F1FB',
+    question:'Are the minimum governance conditions in place - or committed to - before any AI system goes live in your organisation?',
+    why:'Governance built before AI goes live is always cheaper, faster, and more defensible than governance retrofitted after a problem. These conditions are the non-negotiable floor.',
+    prompts:[
+      'Is there a named accountable officer for this AI system beyond the IT department?',
+      'Is there a plan to train staff before the system goes live?',
+      'Is there a fallback process if the AI system fails or produces harmful outputs?',
+    ],
+    cleared_desc:'Minimum conditions are in place or formally committed to before go-live: accountability, training, monitoring, and a fallback process.',
+    partial_desc:'Some conditions are in place but others are still outstanding - particularly monitoring or fallback procedures.',
+    not_desc:'Minimum conditions have not been established. Deployment would leave the organisation without basic operational safeguards.',
+  },
+  {
+    id:'g5', title:'Governance Structure', gate:'Gate 5',
+    color:'#444441', lite:'#F1EFE8',
+    question:'Does your organisation have - or is it committed to building - a board-level governance structure that will oversee AI on an ongoing basis after adoption?',
+    why:'AI governance is not a one-time exercise. Systems change, outputs drift, and regulatory requirements evolve. Without an ongoing governance structure, today\'s responsible adoption becomes tomorrow\'s unmanaged risk.',
+    prompts:[
+      'Has the board or governing authority been briefed on this AI adoption decision?',
+      'Is there a process to review AI system performance after go-live?',
+      'Will AI governance be included in the organisation\'s audit or risk reporting?',
+    ],
+    cleared_desc:'The board is engaged, a post-adoption review process is committed to, and AI governance is within the audit or risk oversight mandate.',
+    partial_desc:'The board is aware but post-adoption governance structures are not yet formally established.',
+    not_desc:'No ongoing governance structure exists or is planned. Adoption would proceed without institutional oversight.',
+  },
+];
+
+const SCORES = [
+  {val:'cleared',    label:'Gate Cleared',    icon:'✓', color:'#085041', bg:'#E1F5EE', border:'#1D9E75'},
+  {val:'partial',    label:'Partially Cleared',icon:'~', color:'#BA7517', bg:'#FAEEDA', border:'#BA7517'},
+  {val:'not-cleared',label:'Not Cleared',     icon:'✗', color:'#A32D2D', bg:'#FCEBEB', border:'#A32D2D'},
+];
+
+// ── STATE ─────────────────────────────────────────────────────────
+let state = { scores:{}, observations:{} };
+
+// ── NAV ───────────────────────────────────────────────────────────
+const PAGES = ['page-landing','page-org','page-g0','page-g1','page-g2','page-g3','page-g4','page-results'];
+
+function goTo(pid) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pid).classList.add('active');
+  window.scrollTo(0,0);
+  updateProg(pid);
+}
+
+function updateProg(pid) {
+  const bar = document.getElementById('prog-bar');
+  if(pid==='page-landing'){bar.style.display='none';return;}
+  bar.style.display='flex';
+  const idx = PAGES.indexOf(pid);
+  const total = PAGES.length;
+  const pct = Math.round((idx/(total-1))*100);
+  const dots = document.getElementById('prog-dots');
+  dots.innerHTML='';
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i<idx?' done':i===idx?' active':'');
+    dots.appendChild(d);
+  }
+  document.getElementById('prog-label').textContent=`Step ${idx} of ${total-1}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+function restart() {
+  state={scores:{},observations:{}};
+  buildGatePages();
+  goTo('page-landing');
+}
+
+// ── BUILD GATE PAGES ──────────────────────────────────────────────
+function buildGatePages() {
+  GATES.forEach((gate,i) => {
+    const pid = `page-g${i}`;
+    const el = document.getElementById(pid);
+    const sel = state.scores[gate.id];
+
+    el.innerHTML = `
+      <div class="container">
+        <div class="sec-head">
+          <div class="eyebrow">Step ${i+2} of 7 - ${gate.gate} of 5</div>
+          <h2>${gate.title}</h2>
+        </div>
+        <div class="gate-card">
+          <div class="gate-card-header" style="background:${gate.lite}30;border-bottom:1px solid ${gate.lite};">
+            <div class="gate-badge" style="background:${gate.lite};color:${gate.color};">${i+1}</div>
+            <div>
+              <div class="gate-title" style="color:${gate.color};">${gate.gate}: ${gate.title}</div>
+            </div>
+          </div>
+          <div class="gate-body">
+            <div class="gate-question">${gate.question}</div>
+            <div class="gate-why">Why this gate matters: ${gate.why}</div>
+            <div class="gate-prompts">
+              <div class="gate-prompt-label">Discussion prompts</div>
+              ${gate.prompts.map(p=>`<div class="gate-prompt">→  ${p}</div>`).join('')}
+            </div>
+            <div class="gate-score-row">
+              <button class="gate-btn ${sel==='cleared'?'cleared':''}"
+                onclick="score('${gate.id}','cleared','${pid}')">
+                ✓<br><strong>Gate Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">${gate.cleared_desc}</span>
+              </button>
+              <button class="gate-btn ${sel==='partial'?'partial':''}"
+                onclick="score('${gate.id}','partial','${pid}')">
+                ~<br><strong>Partially Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">${gate.partial_desc}</span>
+              </button>
+              <button class="gate-btn ${sel==='not-cleared'?'not-cleared':''}"
+                onclick="score('${gate.id}','not-cleared','${pid}')">
+                ✗<br><strong>Not Cleared</strong><br><span style="font-size:.72rem;font-weight:400;">${gate.not_desc}</span>
+              </button>
+            </div>
+            <div class="obs-row">
+              <label>Key observation from the discussion</label>
+              <textarea id="obs-${gate.id}" placeholder="Record the key point that emerged..."
+                onchange="recordObs('${gate.id}')">${state.observations[gate.id]||''}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bar">
+          <button class="btn-back" onclick="goTo('${i===0?'page-org':`page-g${i-1}`}')">← Back</button>
+          <div>
+            <div style="font-size:.72rem;color:var(--gray-mid);text-align:right;margin-bottom:6px;">
+              ${sel?'Gate assessed ✓ - click Next to continue':'Assess this gate to continue'}
+            </div>
+            <button class="btn-next" ${!sel?'disabled':''} onclick="goTo('${i<4?`page-g${i+1}`:'page-results'}');${i===4?'buildResults();':''}">
+              ${i<4?'Next Gate →':'See Decision →'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function score(id, val, pid) {
+  state.scores[id] = val;
+  buildGatePages();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(pid).classList.add('active');
+}
+
+function recordObs(id) {
+  const el = document.getElementById(`obs-${id}`);
+  if(el) state.observations[id] = el.value;
+}
+
+// ── BUILD RESULTS ─────────────────────────────────────────────────
+function buildResults() {
+  GATES.forEach(g=>{
+    const el=document.getElementById(`obs-${g.id}`);
+    if(el) state.observations[g.id]=el.value;
+  });
+
+  const org      = document.getElementById('org-name').value || 'Your Organisation';
+  const orgType  = document.getElementById('org-type').value || '';
+  const aiSystem = document.getElementById('ai-system').value || 'proposed AI system';
+  const date     = document.getElementById('org-date').value || '';
+  const lead     = document.getElementById('org-lead').value || '';
+  const fac      = document.getElementById('org-facilitator').value || 'AXION AI';
+
+  document.getElementById('res-org-label').textContent =
+    `${org}${orgType?' · '+orgType:''}${aiSystem?' · '+aiSystem:''}${date?' · '+date:''}${lead?' · Completed by '+lead:''}`;
+
+  // Gate results
+  const gateResults = GATES.map(g => ({
+    ...g,
+    result: state.scores[g.id] || 'not-cleared',
+    obs: state.observations[g.id] || '',
+  }));
+
+  const cleared  = gateResults.filter(g=>g.result==='cleared').length;
+  const partial  = gateResults.filter(g=>g.result==='partial').length;
+  const notCleared = gateResults.filter(g=>g.result==='not-cleared').length;
+
+  // ── DECISION LOGIC ────────────────────────────────────────────
+  // Proceed: 4-5 cleared, max 1 partial, 0 not-cleared
+  // Do Not Proceed: 2+ not-cleared OR Gate 1 not-cleared (no rationale = stop)
+  // Everything else: Proceed with Conditions
+  const g1 = state.scores['g1'];
+  const g2 = state.scores['g2'];
+  const g3 = state.scores['g3'];
+
+  let decision;
+  if (notCleared >= 2 || g1 === 'not-cleared') {
+    decision = {
+      verdict:'Do Not Proceed Yet',
+      desc:`${org} does not currently meet the minimum conditions for responsible AI adoption. The gates that remain uncleared represent foundational gaps - not minor adjustments. Proceeding without addressing them creates regulatory, operational, and reputational risk that is difficult to unwind after deployment.`,
+      subdesc:'This is not a permanent verdict. It is a governance checkpoint. Address the conditions below and re-run this assessment before any AI system is adopted.',
+      bg:'#FCEBEB', c:'#A32D2D', b:'#F09595',
+      icon:'✗',
+    };
+  } else if (cleared >= 4 && notCleared === 0 && partial <= 1) {
+    decision = {
+      verdict:'Proceed',
+      desc:`${org} has cleared the minimum conditions for responsible AI adoption of ${aiSystem}. The governance foundation is in place. Proceed with the adoption, ensuring that the conditions committed to in this assessment are maintained and that a formal post-adoption review is scheduled.`,
+      subdesc:'Proceeding does not mean governance is complete. The next step is a full AI Governance Readiness Assessment to establish a formal, auditable baseline.',
+      bg:'#E1F5EE', c:'#085041', b:'#5DCAA5',
+      icon:'✓',
+    };
+  } else {
+    decision = {
+      verdict:'Proceed with Conditions',
+      desc:`${org} has a sufficient foundation to proceed with ${aiSystem} - but specific conditions must be addressed before go-live. These are not optional enhancements. They are governance requirements that, if unmet, leave the organisation exposed.`,
+      subdesc:'Document each condition as a board commitment with a named owner and deadline. Do not go live until all conditions in this report are satisfied.',
+      bg:'#FAEEDA', c:'#854F0B', b:'#EF9F27',
+      icon:'~',
+    };
+  }
+
+  // Banner
+  document.getElementById('res-banner').style.cssText=`background:${decision.bg};border:1.5px solid ${decision.b};`;
+  document.getElementById('res-banner').innerHTML=`
+    <div class="decision-banner-inner">
+      <div>
+        <div class="decision-label" style="color:${decision.c};">Board Decision</div>
+        <div class="decision-title" style="color:${decision.c};">${decision.verdict}</div>
+        <div class="decision-desc" style="color:${decision.c};">${decision.desc}</div>
+        <div style="font-size:.78rem;margin-top:.75rem;color:${decision.c};font-style:italic;">${decision.subdesc}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:4rem;color:${decision.c};font-weight:700;">${decision.icon}</div>
+        <div style="font-size:.72rem;color:${decision.c};opacity:.65;">${cleared}/5 gates cleared<br>${partial} partial · ${notCleared} not cleared</div>
+      </div>
+    </div>
+  `;
+
+  // Gate status grid
+  document.getElementById('res-gates').innerHTML = gateResults.map(g=>{
+    const s = SCORES.find(sc=>sc.val===g.result) || SCORES[2];
+    return `
+      <div class="gate-result-card" style="border-top:3px solid ${g.color};">
+        <div class="gate-result-title">${g.gate}<br>${g.title}</div>
+        <div class="gate-result-icon">${s.icon}</div>
+        <div class="gate-result-status" style="color:${s.color};">${s.label}</div>
+        <div class="gate-status-bar" style="background:${s.bg};"></div>
+      </div>
+    `;
+  }).join('');
+
+  // Findings - uncleared and partial gates
+  const unclearedGates = gateResults.filter(g=>g.result==='not-cleared');
+  const partialGates   = gateResults.filter(g=>g.result==='partial');
+  const clearedGates   = gateResults.filter(g=>g.result==='cleared');
+  const hasObs = GATES.some(g=>state.observations[g.id]&&state.observations[g.id].trim());
+
+  document.getElementById('res-findings').innerHTML=`
+    <div class="finding-card" style="border-left:3px solid ${unclearedGates.length>0?'var(--red)':'var(--teal)'};">
+      <h4 style="color:${unclearedGates.length>0?'var(--red)':'var(--teal)'};">
+        ${unclearedGates.length>0?'Gates not cleared':'All gates cleared or partially cleared'}
+      </h4>
+      ${unclearedGates.length>0
+        ? unclearedGates.map(g=>`
+          <div class="finding-item" style="background:var(--red-lite);">
+            <strong style="color:var(--red);">${g.gate}: ${g.title}</strong>
+            ${g.obs?`<div class="obs-display">"${g.obs}"</div>`:''}
+          </div>`).join('')
+        : `<div class="finding-item" style="background:var(--teal-lite);">
+            <span style="color:var(--teal-dark);">No gates were fully rejected. Review partial gates carefully before proceeding.</span>
+           </div>`
+      }
+    </div>
+    <div class="finding-card" style="border-left:3px solid ${clearedGates.length>0?'var(--teal)':'var(--gray)'};">
+      <h4 style="color:${clearedGates.length>0?'var(--teal)':'var(--gray)'};">
+        ${clearedGates.length>0?'Gates cleared':'No gates fully cleared'}
+      </h4>
+      ${clearedGates.length>0
+        ? clearedGates.map(g=>`
+          <div class="finding-item" style="background:var(--teal-lite);">
+            <strong style="color:var(--teal-dark);">${g.gate}: ${g.title}</strong>
+            ${g.obs?`<div class="obs-display">"${g.obs}"</div>`:''}
+          </div>`).join('')
+        : `<div class="finding-item" style="background:var(--gray-lite);">
+            <span style="color:var(--gray-mid);">No gates were fully cleared. Foundational readiness work is required across all dimensions.</span>
+           </div>`
+      }
+      ${hasObs?`
+      <div class="finding-item" style="background:var(--gray-lite);margin-top:.5rem;">
+        <strong style="color:var(--gray);">All gate observations</strong>
+        ${GATES.map(g=>state.observations[g.id]&&state.observations[g.id].trim()?`<div class="obs-display">${g.gate}: "${state.observations[g.id]}"</div>`:'').join('')}
+      </div>`:''}
+    </div>
+  `;
+
+  // Conditions to satisfy (partial gates)
+  const condCard = document.getElementById('res-conditions');
+  if (partialGates.length > 0) {
+    condCard.style.display = 'block';
+    condCard.innerHTML = `
+      <h4>Conditions to satisfy before go-live</h4>
+      <p style="font-size:.82rem;color:var(--gray-mid);margin-bottom:.75rem;">The following gates were partially cleared. Each represents a specific condition that must be met - with a named owner and deadline - before the AI system goes live.</p>
+      ${partialGates.map(g=>{
+        const condBg = g.color+'15';
+        return `
+          <div class="condition-item">
+            <span class="cond-gate" style="background:${g.lite};color:${g.color};">${g.gate}</span>
+            <div>
+              <strong style="color:${g.color};">${g.title}</strong>
+              <div style="font-size:.78rem;color:var(--gray-mid);margin-top:3px;">${g.partial_desc}</div>
+              ${g.obs?`<div class="obs-display">"${g.obs}"</div>`:''}
+              <div style="margin-top:.4rem;font-size:.78rem;">
+                Owner: <span style="color:var(--gray-mid);">________________________</span>
+                &nbsp;&nbsp;Deadline: <span style="color:var(--gray-mid);">________________________</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('')}
+    `;
+  } else {
+    condCard.style.display = 'none';
+  }
+
+  // Next steps - conditional logic
+  const allNext = [
+    // Do Not Proceed scenarios
+    { label:'Required', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Develop a documented AI business case - articulate the specific problem, the benefit of AI over alternatives, and the named business owner.',
+      show: g1 === 'not-cleared' },
+    { label:'Required', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Address organisational readiness gaps - assign accountability, confirm data rights, and identify affected staff before reconsidering AI adoption.',
+      show: g2 === 'not-cleared' },
+    { label:'Required', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Complete a formal risk and ethics assessment - document the specific risks of the proposed AI system before any adoption decision is made.',
+      show: g3 === 'not-cleared' },
+    { label:'Required', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Establish minimum adoption conditions - accountability, staff training, monitoring, and fallback processes - before any AI system goes live.',
+      show: state.scores['g4'] === 'not-cleared' },
+    { label:'Required', cls:'background:#FCEBEB;color:#A32D2D;',
+      text:'Build a board-level AI governance structure - the board must be engaged and a post-adoption review process established before proceeding.',
+      show: state.scores['g5'] === 'not-cleared' },
+
+    // Proceed with conditions
+    { label:'Condition', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Formalise the strategic rationale - document the business case and seek board or ExCo sign-off before procurement begins.',
+      show: g1 === 'partial' },
+    { label:'Condition', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Close readiness gaps - resolve outstanding data rights or staff preparation issues with a named owner and deadline.',
+      show: g2 === 'partial' },
+    { label:'Condition', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Complete the risk and ethics assessment - document all identified risks with named owners and mitigation plans.',
+      show: g3 === 'partial' },
+    { label:'Condition', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Confirm all adoption conditions are in place - particularly monitoring protocols and fallback procedures.',
+      show: state.scores['g4'] === 'partial' },
+    { label:'Condition', cls:'background:#FAEEDA;color:#BA7517;',
+      text:'Formalise board oversight - confirm AI governance is within the audit or risk committee\'s mandate before go-live.',
+      show: state.scores['g5'] === 'partial' },
+
+    // Recommended for all
+    { label:'Recommended', cls:'background:#E6F1FB;color:#185FA5;',
+      text:'Full AI Governance Readiness Assessment - once the decision to adopt is confirmed, establish a complete governance baseline aligned to international standards.',
+      show: cleared >= 3 },
+    { label:'Recommended', cls:'background:#E6F1FB;color:#185FA5;',
+      text:'AI Vendor Due Diligence Review - before signing any contract with an AI vendor, have AXION AI review the governance, data, and accountability provisions.',
+      show: cleared >= 2 },
+    { label:'Recommended', cls:'background:#E1F5EE;color:#085041;',
+      text:'Board AI Governance Training - equip your board and executive team with the AI literacy needed to oversee this adoption responsibly.',
+      show: state.scores['g5'] !== 'cleared' },
+    { label:'Recommended', cls:'background:#E1F5EE;color:#085041;',
+      text:'Retained AI Governance Advisory - engage AXION AI on an ongoing basis to support the governance of this AI system after adoption.',
+      show: cleared >= 4 },
+  ];
+
+  // Rules
+  const requiredItems  = allNext.filter(n=>n.show && n.label==='Required');
+  const conditionItems = allNext.filter(n=>n.show && n.label==='Condition');
+  const requiredCount  = requiredItems.length;
+
+  let nextSteps;
+  if (requiredCount >= 3) {
+    nextSteps = allNext.filter(n=>n.show && (n.label==='Required'||n.label==='Condition')).slice(0,5);
+  } else {
+    nextSteps = allNext.filter(n=>n.show).slice(0,5);
+  }
+
+  document.getElementById('res-next').innerHTML=`
+    <h4>Recommended next steps for ${org}</h4>
+    ${nextSteps.map(n=>`
+      <div class="next-step-item">
+        <span class="ns-badge" style="${n.cls}">${n.label}</span>
+        <span>${n.text}</span>
+      </div>`).join('')}
+    <div style="margin-top:1rem;padding:.75rem;background:var(--gold-lite);border-radius:7px;border:1px solid #e8c87a;font-size:.82rem;color:var(--navy);">
+      <strong>To discuss these findings:</strong> Contact AXION AI at <strong>info@axionadvisory.net</strong> or visit <strong>axionadvisory.net</strong>
+    </div>
+  `;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+buildGatePages();
+</script>
+
+
+</body></html>
